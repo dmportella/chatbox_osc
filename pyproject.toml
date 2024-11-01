@@ -9,7 +9,7 @@ dependencies = [
     "python_osc>=1.8.3,<2",
     "uwuify>=1.3.0,<2",
 ]
-requires-python = ">= 3.7"
+requires-python = ">= 3.8"
 authors = [
   {name = "Amelien Deshams", email = "a.deshams+git@slmail.me"}
 ]
@@ -26,7 +26,6 @@ classifiers = [ # https://pypi.org/classifiers/
     "Intended Audience :: Developers",
     "Operating System :: Microsoft :: Windows",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
