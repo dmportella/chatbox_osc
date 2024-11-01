@@ -1,0 +1,3 @@
+include:
+  - project: 'ameliend/gitlab-templates'
+    file: '/pipeline_templates/python-3.11.yml'

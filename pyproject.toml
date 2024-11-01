@@ -1,0 +1,96 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "chatbox_osc"
+dependencies = []
+requires-python = ">= 3.7"
+authors = [
+  {name = "Amelien Deshams", email = "a.deshams+git@slmail.me"}
+]
+maintainers = [
+  {name = "Amelien Deshams", email = "a.deshams+git@slmail.me"}
+]
+description = "A python library to control your VRChat Chatbox, which can be used as a module or simply on the command line."
+readme = "README.md"
+license = { text = "MIT license" }
+keywords = []
+classifiers = [ # https://pypi.org/classifiers/
+    # How mature is this project? Common values are
+    #   3 - Alpha
+    #   4 - Beta
+    #   5 - Production/Stable
+    "Development Status :: 3 - Alpha",
+
+    # Indicate your platform
+    "Environment :: Win32 (MS Windows)",
+    "Operating System :: Microsoft :: Windows",
+
+    # Pick your license as you wish (see also "license" above)
+    "License :: OSI Approved :: MIT license",
+
+    # Specify the Python versions you support here.
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+documentation = [
+    "recommonmark",
+    "sphinx",
+    "sphinx-automodapi",
+    "sphinx-copybutton",
+    "sphinx_rtd_theme",
+    "sphinxcontrib-napoleon",
+]
+tests = [
+    "pytest",
+]
+
+[project.urls]
+Documentation = "https://ameliend.gitlab.io/chatbox_osc/"
+Repository = "https://gitlab.com/ameliend/chatbox_osc"
+Issues = "https://gitlab.com/ameliend/chatbox_osc/issues"
+Changelog = "https://gitlab.com/ameliend/chatbox_osc/blob/main/CHANGELOG.md"
+
+# Remove these lines if you don't want to use scripts in you project
+[project.scripts]
+chatbox_osc = "chatbox_osc.cli:main_cli"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.package-data]
+"*" = ["*.*"]
+
+[tool.setuptools.dynamic]
+version = { attr = "chatbox_osc._version.__version__" }
+
+[tool.ruff]
+extend-exclude = ["tests", "docs"]
+line-length = 110
+indent-width = 4
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "D100", # No need to document the module if it's already explicit enough.
+    "D413", # No need to add a blank line after the last section of a docstring
+    "D107", # When hovering a class in Visual Studio Code, it displays the docstring
+    # of the class and not the __init__.
+    "ANN001", # Sometimes we don't know the type of the argument.
+    "DTZ", # No need to precise the time zones.
+    "RUF012", # I don't really know the needs of this.
+    "FBT", # We want to use Boolean positional arguments.
+    "ANN002", # Sometimes we don't know the type of the *args argument.
+    "ANN003", # Sometimes we don't know the type of the *kwargs argument.
+    "INP001", # Because the `docs` folder is not a Python Package.
+]
+
+[tool.ruff.lint.pylint]
+max-args = 10
+
+[tool.ruff.format]
+indent-style = "space"
