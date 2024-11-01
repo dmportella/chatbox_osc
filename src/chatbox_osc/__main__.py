@@ -1,4 +1,4 @@
-"""Entry point for Chatbox OSC."""
+"""Entry point for ChatboxOSC."""
 
 from chatbox_osc.cli import main_cli
 
