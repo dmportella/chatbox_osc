@@ -1,18 +1,48 @@
-"""Pytest configuration file for Chatbox OSC."""
+import threading
 
 import pytest
+from pythonosc import osc_server
+from pythonosc.dispatcher import Dispatcher
+from pythonosc.udp_client import SimpleUDPClient
 
 
-def pytest_configure(config):
-    # A "local" marker to ignore tests that will fail in the Gitlab pipelines
-    # Add `@pytest.mark.local` above your tests functions you want to ignore online
-    config.addinivalue_line("markers", "local : mark a local test")
+class Chatbox:
+    def __init__(self):
+        self.message_input = None
+        self.message_typing = False
 
-@pytest.fixture
-def response():
-    """Sample pytest fixture.
+    def set_message_input(self, adress, message, *args):
+        self.message_input = message
 
-    See more at: http://doc.pytest.org/en/latest/fixture.html
-    """
-    # import requests
-    # return requests.get('https://gitlab.com/ameliend/python-package-cookiecutter-template')
+    def set_message_typing(self, adress, message, *args):
+        self.message_typing = message
+
+
+chatbox = Chatbox()
+dispatcher = Dispatcher()
+dispatcher.map("/chatbox/input", chatbox.set_message_input)
+dispatcher.map("/chatbox/typing", chatbox.set_message_typing)
+server = osc_server.ThreadingOSCUDPServer(("127.0.0.1", 9000), dispatcher)
+
+
+@pytest.fixture()
+def client():
+    return SimpleUDPClient("127.0.0.1", 9000)
+
+
+@pytest.fixture(scope="session")
+def chatbox_fixture():
+    yield chatbox
+
+
+def server_thread():
+    server.serve_forever()
+
+
+def pytest_sessionstart(session):
+    thread = threading.Thread(target=server_thread)
+    thread.start()
+
+
+def pytest_sessionfinish(session, exitstatus):
+    server.shutdown()
